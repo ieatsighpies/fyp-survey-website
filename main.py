@@ -25,24 +25,29 @@ def show_survey_stage():
 
 @st.fragment
 def show_chat_stage():
-    # Display chat messages from history on app rerun
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    # Display chat messages from history in a scrollable container
+    with st.container():
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
     idx = st.session_state.current_question_index
     if idx < len(survey_questions):
         # Show the corresponding survey question
-        st.markdown(f"**Give reasons for your answer to: {survey_questions[idx]}** You answered with: *{st.session_state.survey_responses[list(st.session_state.survey_responses.keys())[idx]]}*")
+        st.markdown(
+            f"**Give reasons for your answer to: {survey_questions[idx]}** "
+            f"You answered with: *{st.session_state.survey_responses[list(st.session_state.survey_responses.keys())[idx]]}*"
+        )
+
 
         # Accept user input
         if prompt := st.chat_input("Defend your choices:"):
             system_prompt = {
                 "role": "system",
                 "content": (
-                    """You are a devil's advocate. Convince the user to pick an alternative option.\
+                    f"""You are a devil's advocate. Convince the user to pick an alternative option.\
                     For multiple choice questions, argue for the option they did not pick.
-                    Be assertive, relevant, and focus on each survey answer separately. questions are: {survey_questions}"""
+                    Be assertive, relevant, and focus on each survey answer separately. questions are: {survey_questions[1:]}"""
                 )
             }
 
