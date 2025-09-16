@@ -9,6 +9,7 @@ MONGO_DB = "survey_db"
 #collections
 SURVEY_COLLECTION = "survey_responses"
 CHAT_COLLECTION = "chat_logs"
+VALIDATE_ANSWERS_COLLECTION = "validate_answers"
 # JSON schema validator for your survey collection
 SURVEY_SCHEMA_VALIDATOR = {
     "$jsonSchema": {
@@ -69,6 +70,12 @@ def get_chat_collection():
     # Chat logs can have a simple schema or no validation
     return create_collection_if_not_exists(db, CHAT_COLLECTION)
 
+@st.cache_data(ttl=600)
+def get_validated_collection():
+    client = get_mongo_client()
+    db = client[MONGO_DB]
+    # Chat logs can have a simple schema or no validation
+    return create_collection_if_not_exists(db, VALIDATE_ANSWERS_COLLECTION)
 
 def insert_survey_response(responses):
     try:
@@ -96,6 +103,17 @@ def insert_chat_log(user_message, assistant_response):
         return result.inserted_id
     except errors.WriteError as e:
         print(f"Chat log insert failed: {e}")
+        return None
+
+def insert_validated_answers(responses: dict):
+    try:
+        client = get_mongo_client()
+        db = client.get_default_database() #database is specified in the URI
+        collection = db[VALIDATE_ANSWERS_COLLECTION]
+        result = collection.insert_one(responses)
+        return result.inserted_id
+    except errors.WriteError as e:
+        print(f"Survey insert failed: {e}")
         return None
 
 def show_all_documents():

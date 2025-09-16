@@ -17,24 +17,28 @@ def render_survey_form(existing_responses=None):
     with st.form("survey_form"):
         responses = {}
         responses["name"] = st.text_input(survey_questions[0], value=existing_responses.get("name", ""))
-        responses["food_pref"] = st.radio(
+        responses["simple_qn_1"] = st.radio(
             survey_questions[1],
             ["Pizza", "Sushi"],
-            index=0 if existing_responses.get("food_pref", "") == "Pizza" else 1
+            index=0 if existing_responses.get("simple_qn_1", "") == "Pizza" else 1
         )
-        responses["interest"] = st.radio(
+        responses["simple_qn_2"] = st.radio(
             survey_questions[2],
             ["Arts", "Science"],
-            index=0 if existing_responses.get("interest", "") == "Arts" else 1
+            index=0 if existing_responses.get("simple_qn_2", "") == "Arts" else 1
         )
-        responses["commute"] = st.selectbox(
+        responses["medium_qn_1"] = st.selectbox(
             survey_questions[3],
-            ["Taxi", "Bus", "MRT", "Car", "Other"],
-            index=["Taxi", "Bus", "MRT", "Car", "Other"].index(existing_responses.get("commute", "Taxi"))
+            ["Taxi", "Bus", "MRT", "Car"],
+            index=["Taxi", "Bus", "MRT", "Car"].index(existing_responses.get("medium_qn_1", "Taxi"))
         )
-        responses["diet"] = st.text_area(survey_questions[4], value=existing_responses.get("diet", ""))
-        responses["trip_plan"] = st.text_area(survey_questions[5], value=existing_responses.get("trip_plan", ""))
-        responses["treasure"] = st.text_area(survey_questions[6], value=existing_responses.get("treasure", ""))
+        responses["medium_qn_2"] = st.selectbox(
+            survey_questions[4],
+            ["Keto", "Vegetarian", "Vegan", "Pescatarian"],
+            index=["Keto", "Vegetarian", "Vegan", "Pescatarian"].index(existing_responses.get("medium_qn_2", ""))
+        )
+        responses["complex_qn_1"] = st.text_area(survey_questions[5], value=existing_responses.get("complex_qn_1", ""))
+        responses["complex_qn_2"] = st.text_area(survey_questions[6], value=existing_responses.get("complex_qn_2", ""))
 
         submitted = st.form_submit_button("Submit Survey")
         return submitted, responses
