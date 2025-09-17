@@ -74,14 +74,15 @@ def show_chat_stage():
             system_prompt = {
                 "role": "system",
                 "content": (
-                    f"""You are a devil's advocate. Convince the user to pick an alternative option.\
+                    f"""You are a devil's advocate. Convince the user to pick an alternative option.
                     For multiple choice questions, argue for options not picked.
-                    Be assertive, relevant, and focus on each survey answer separately. Questions: {survey_questions[1:]}, \
+                    Be assertive, relevant, and focus on each survey answer separately. Questions: {survey_questions[1:]},
+                    Options: {list(st.session_state.survey_responses.values())[1:4]}.
                     User answered: {list(st.session_state.survey_responses.values())[1:]}."""
                 )
             }
             st.session_state.messages.append(system_prompt)
-            logging.info("Added system prompt.")
+            logging.info(f"Added system prompt.{system_prompt}")
 
         if prompt:
             # Append only, do NOT re-render new user input here (this causes input shift)

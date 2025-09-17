@@ -35,7 +35,7 @@ def render_survey_form(existing_responses=None):
         responses["medium_qn_2"] = st.selectbox(
             survey_questions[4],
             ["Keto", "Vegetarian", "Vegan", "Pescatarian"],
-            index=["Keto", "Vegetarian", "Vegan", "Pescatarian"].index(existing_responses.get("medium_qn_2", ""))
+            index=["Keto", "Vegetarian", "Vegan", "Pescatarian"].index(existing_responses.get("medium_qn_2", "Keto"))
         )
         responses["complex_qn_1"] = st.text_area(survey_questions[5], value=existing_responses.get("complex_qn_1", ""))
         responses["complex_qn_2"] = st.text_area(survey_questions[6], value=existing_responses.get("complex_qn_2", ""))
